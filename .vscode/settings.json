@@ -1,0 +1,13 @@
+{
+  "vetur.format.defaultFormatter.js": "none",
+  "vetur.format.defaultFormatter.html": "none",
+  "[vue]": {
+    "editor.formatOnSave": false
+  },
+  "[javascript]": {
+    "editor.formatOnSave": false
+  },
+  "[typescript]": {
+    "editor.formatOnSave": false
+  },
+}

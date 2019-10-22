@@ -2,7 +2,7 @@
   <div id="app">
     <h1>Hangman</h1>
     <div class="row">
-      <Gallows :tries="tries" @game-over="setLoseState()" />
+      <Gallows ref="gallows" :tries="tries" @game-over="setLoseState()" />
       <Letters
         :class="{ disabled: currentPlayer === 'computer' }"
         :letters="letters"
@@ -21,6 +21,7 @@
 <script>
 import words from '@/data/words'
 import letters from '@/data/letters'
+import isAlpha from 'validator/lib/isAlpha'
 
 const TRIES_AMOUNT = 10
 
@@ -57,8 +58,8 @@ export default {
     userWord: {
       deep: true,
       handler(value) {
-        if (value.word.length < 3) {
-          this.getUsersWord(`The word's minimum length is 3. Please try again`)
+        if (value.word.length < 3 || !isAlpha(value.word)) {
+          this.getUsersWord('Please insert word with length more than 3 which contains only letters')
         }
       },
     },
@@ -97,6 +98,7 @@ export default {
       this.guessedLetters = []
       this.clickedLetters = []
       this.currentPlayer = 'human'
+      this.$refs.gallows.resetStyles()
       clearInterval(this.computerInterval)
     },
     playWithComputer() {

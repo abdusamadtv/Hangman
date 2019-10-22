@@ -38,13 +38,13 @@ export default {
   },
   methods: {
     animateHanging() {
+      const { victim, victimLeftHand, victimRightHand, victimLeftLeg, victimRightLeg } = this.$refs
       const tl = new TimelineLite({
         delay: 1,
         onComplete: () => {
           this.$emit('game-over')
         },
       })
-      const { victim, victimLeftHand, victimRightHand, victimLeftLeg, victimRightLeg } = this.$refs
 
       tl.to(victim, 0.25, { y: 40, ease: Power2.easeOut }, 0)
       tl.to(victim, 0.5, { y: 20, ease: Bounce.easeOut, delay: 0.25 }, 0)
@@ -54,6 +54,13 @@ export default {
 
       tl.to([victimRightHand, victimRightLeg], 0.25, { rotation: -30, ease: Power2.easeOut }, 0)
       tl.to([victimRightHand, victimRightLeg], 0.5, { rotation: 70, ease: Bounce.easeOut, delay: 0.25 }, 0)
+    },
+    resetStyles() {
+      const { victim, victimLeftHand, victimRightHand, victimLeftLeg, victimRightLeg } = this.$refs
+
+      Array(victim, victimLeftHand, victimRightHand, victimLeftLeg, victimRightLeg).forEach(element => {
+        element.removeAttribute('style')
+      })
     },
   },
 }

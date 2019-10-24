@@ -29,38 +29,37 @@ export default {
       default: 0,
     },
   },
+  data: () => ({
+    animationTimeline: {},
+  }),
   watch: {
     tries(value) {
       if (value === 0) {
-        this.animateHanging()
+        this.animationTimeline._initted ? this.animationTimeline.restart(true) : this.init()
+      }
+      if (value === 7 && this.animationTimeline._initted) {
+        this.animationTimeline.pause(0) // reset without callback
       }
     },
   },
   methods: {
-    animateHanging() {
+    init() {
       const { victim, victimLeftHand, victimRightHand, victimLeftLeg, victimRightLeg } = this.$refs
-      const tl = new TimelineLite({
+      const timeline = (this.animationTimeline = new TimelineLite({
         delay: 1,
         onComplete: () => {
           this.$emit('game-over')
         },
-      })
+      }))
 
-      tl.to(victim, 0.25, { y: 40, ease: Power2.easeOut }, 0)
-      tl.to(victim, 0.5, { y: 20, ease: Bounce.easeOut, delay: 0.25 }, 0)
+      timeline.to(victim, 0.25, { y: 40, ease: Power2.easeOut }, 0)
+      timeline.to(victim, 0.5, { y: 20, ease: Bounce.easeOut, delay: 0.25 }, 0)
 
-      tl.to([victimLeftHand, victimLeftLeg], 0.25, { rotation: 30, ease: Power2.easeOut }, 0)
-      tl.to([victimLeftHand, victimLeftLeg], 0.5, { rotation: -70, ease: Bounce.easeOut, delay: 0.25 }, 0)
+      timeline.to([victimLeftHand, victimLeftLeg], 0.25, { rotation: 30, ease: Power2.easeOut }, 0)
+      timeline.to([victimLeftHand, victimLeftLeg], 0.5, { rotation: -70, ease: Bounce.easeOut, delay: 0.25 }, 0)
 
-      tl.to([victimRightHand, victimRightLeg], 0.25, { rotation: -30, ease: Power2.easeOut }, 0)
-      tl.to([victimRightHand, victimRightLeg], 0.5, { rotation: 70, ease: Bounce.easeOut, delay: 0.25 }, 0)
-    },
-    resetStyles() {
-      const { victim, victimLeftHand, victimRightHand, victimLeftLeg, victimRightLeg } = this.$refs
-
-      Array(victim, victimLeftHand, victimRightHand, victimLeftLeg, victimRightLeg).forEach(element => {
-        element.removeAttribute('style')
-      })
+      timeline.to([victimRightHand, victimRightLeg], 0.25, { rotation: -30, ease: Power2.easeOut }, 0)
+      timeline.to([victimRightHand, victimRightLeg], 0.5, { rotation: 70, ease: Bounce.easeOut, delay: 0.25 }, 0)
     },
   },
 }

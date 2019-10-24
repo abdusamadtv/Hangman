@@ -2,7 +2,7 @@
   <div id="app">
     <h1>Hangman</h1>
     <div class="row">
-      <Gallows ref="gallows" :tries="tries" @game-over="setLoseState()" />
+      <Gallows :tries="tries" @game-over="setLoseState()" />
       <Letters
         :class="{ disabled: currentPlayer === 'computer' }"
         :letters="letters"
@@ -98,7 +98,6 @@ export default {
       this.guessedLetters = []
       this.clickedLetters = []
       this.currentPlayer = 'human'
-      this.$refs.gallows.resetStyles()
       clearInterval(this.computerInterval)
     },
     playWithComputer() {
@@ -125,10 +124,8 @@ export default {
     setLoseState() {
       const message = this.currentPlayer === 'computer' ? 'Computer has lost :(' : 'Game over :('
 
-      setTimeout(() => {
-        alert(message)
-        this.reset()
-      }, 300)
+      alert(message)
+      this.reset()
     },
   },
 }
